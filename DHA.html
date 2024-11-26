@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Your Used Car Instantly | Trusted Car Selling Site</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f7f8fa;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #2c3e50;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Section */
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        /* Form Styles */
+        .form-card {
+            background-color: white;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin: 10px 0;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        /* Car Listings */
+        .car-listing {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .car-item {
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .car-img {
+            width: 150px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+            margin-right: 20px;
+        }
+
+        .car-info {
+            flex: 1;
+        }
+
+        .car-info strong {
+            font-size: 18px;
+            display: block;
+        }
+
+        .car-info span {
+            color: #777;
+        }
+
+        .remove-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .remove-btn:hover {
+            background-color: #c82333;
+        }
+
+        footer {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Sell Your Used Car Instantly - Most Trusted Car Selling Site
+    </header>
+
+    <div class="container">
+        <!-- Form for listing cars -->
+        <div class="form-card">
+            <h2>List Your Car for Instant Sale</h2>
+            <div class="form-group">
+                <input type="text" id="make" placeholder="Car Make" required>
+            </div>
+            <div class="form-group">
+                <input type="text" id="model" placeholder="Car Model" required>
+            </div>
+            <div class="form-group">
+                <input type="number" id="year" placeholder="Car Year" required>
+            </div>
+            <div class="form-group">
+                <input type="number" id="price" placeholder="Car Price (e.g., 15000)" required>
+            </div>
+            <div class="form-group">
+                <input type="file" id="carImage" accept="image/*" required>
+            </div>
+            <button onclick="addCar()">List My Car</button>
+        </div>
+
+        <!-- Car Listings Section -->
+        <h2>Available Cars for Instant Purchase</h2>
+        <div class="car-listing" id="car-list"></div>
+    </div>
+
+    <footer>
+        © 2024 Trusted Car Selling Site | Sell Your Car with Confidence
+    </footer>
+
+    <script>
+        // Store car listings
+        let carListings = [];
+
+        // Function to add car to the list
+        function addCar() {
+            const make = document.getElementById('make').value;
+            const model = document.getElementById('model').value;
+            const year = document.getElementById('year').value;
+            const price = document.getElementById('price').value;
+            const carImageFile = document.getElementById('carImage').files[0];
+
+            if (!make || !model || !year || !price || !carImageFile) {
+                alert('Please fill all fields and upload an image.');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const carImage = event.target.result;
+                const car = { make, model, year, price, carImage };
+
+                // Add car to the listings
+                carListings.push(car);
+
+                // Display the updated car listings
+                displayCars();
+
+                // Clear the form
+                document.getElementById('make').value = '';
+                document.getElementById('model').value = '';
+                document.getElementById('year').value = '';
+                document.getElementById('price').value = '';
+                document.getElementById('carImage').value = '';
+            };
+
+            reader.readAsDataURL(carImageFile);
+        }
+
+        // Function to display car listings
+        function displayCars() {
+            const carList = document.getElementById('car-list');
+            carList.innerHTML = '';
+
+            if (carListings.length === 0) {
+                carList.innerHTML = '<p>No cars available for sale at the moment.</p>';
+                return;
+            }
+
+            carListings.forEach((car, index) => {
+                const carItem = document.createElement('div');
+                carItem.classList.add('car-item');
+                carItem.innerHTML = `
+                    <img src="${car.carImage}" alt="Car Image" class="car-img">
+                    <div class="car-info">
+                        <strong>${car.year} ${car.make} ${car.model}</strong>
+                        <span>Price: $${car.price}</span>
+                    </div>
+                    <button class="remove-btn" onclick="removeCar(${index})">Remove</button>
+                `;
+                carList.appendChild(carItem);
+            });
+        }
+
+        // Function to remove car from the list
+        function removeCar(index) {
+            carListings.splice(index, 1);
+            displayCars();
+        }
+    </script>
+</body>
+</html>
